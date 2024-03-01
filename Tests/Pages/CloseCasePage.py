@@ -29,20 +29,18 @@ class CloseCasePage(BasePage):
     reopenCaseButton = (By.XPATH,"//button[text()='Reopen Case']")
     nonCompliantButton = (By.XPATH,"//button[text()='Non-Compliant']")
     voluntaryBtn = (By.XPATH,"//button[text()='Voluntary']")
+    forcedToggle=(By.XPATH,"//div[@class='multi-choice-buttons']/button[text()='Forced']")
+    forced_Toggle="//div[@class='multi-choice-buttons']/button[text()='Forced']"
+    voluntary_Btn = "//button[text()='Voluntary']"
     
     
-    
-    
-    
-    
-    
-    
-    
+     
     def __init__(self,driver,*args, **kwargs):
         super().__init__(driver, *args, **kwargs)
-        self.driver.get(TestData.BASE_URL)
+        #self.driver.get(TestData.BASE_URL)
     
     def test_CloseCaseOpenCloseCasePopup(self):
+        self.driver.get(TestData.BASE_URL)
         self.login_page = LoginPage(self.driver)
         self.login_page.login_Agency(TestData.USERNAME,TestData.PASSWORD)
         self.createCase()
@@ -76,10 +74,13 @@ class CloseCasePage(BasePage):
         self.do_waitForElement_Visiblity(self.closeCaseBtn)
         self.do_waitForElement_ElementClickable(self.closeCaseBtn)
         self.do_click(self.closeCaseBtn)
-        self.do_waitForElement_Visiblity((By.xpath,"//div[@class='multi-choice-buttons']//button[@class='square-btn btn btn-primary']"))
-        self.do_waitForElement_PresenceLocated((By.xpath,"//div[@class='multi-choice-buttons']//button[@class='square-btn btn btn-primary']"))
-        VoluntaryBtnState = self.driver.find_element(self.voluntaryBtn)
-        assert VoluntaryBtnState.isEnabled()
+        self.do_waitForElement_Visiblity((By.XPATH,"//div[@class='multi-choice-buttons']//button[@class='square-btn btn btn-primary']"))
+        self.do_waitForElement_PresenceLocated((By.XPATH,"//div[@class='multi-choice-buttons']//button[@class='square-btn btn btn-primary']"))
+        VoluntaryBtnState = self.driver.find_element(By.XPATH,self.voluntary_Btn)
+        self.do_waitForElement_PresenceLocated(self.forcedToggle)
+        ForcedBtnState = self.driver.find_element(By.XPATH,self.forced_Toggle)
+        assert ForcedBtnState.is_enabled()
+        assert VoluntaryBtnState.is_enabled()
       
 
 			 
